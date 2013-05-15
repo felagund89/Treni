@@ -35,7 +35,7 @@ public class ParserFileInput {
 
 	private static Treno tren = new Treno();
 
-	private static List<Treno> treni = new ArrayList<Treno>();
+	private static List<Treno> treni = new ArrayList<Treno>(0);
 
 	private static List<Richiesta> richieste = new ArrayList<Richiesta>();
 
@@ -103,35 +103,32 @@ public class ParserFileInput {
 					long orArr = Long.parseLong(stringaTreno[1]);
 					long orPar = Long.parseLong(stringaTreno[2]);
 
-					Treno treno2 = new Treno();
-					treno2.setCodiceTreno(cod);
-					treno2.setOraArrivo(orArr);
-					treno2.setOraPartenza(orPar);
-					// treno2.getTratta().add(stazione);
-					tren = treno2;
-					
+					// if (treni.isEmpty()) {
+					// treni.add(treno2);
+					// iterazioniTotali++;
+					// contatoreTreni++;
+					// } else
+					int valore = contains2(cod);
+					if (valore != -1) {
+
+						// aggiungo la stazione...
+						treni.get(valore).getTratta().add(stazione);
+
+					}
+
+					else {
+						// treno2.getTratta().add(stazione);
+						Treno treno2 = new Treno();
+						treno2.setCodiceTreno(cod);
+						treno2.setOraArrivo(orArr);
+						treno2.setOraPartenza(orPar);
 						treno2.getTratta().add(stazione);
+
 						treni.add(treno2);
-						if (treni.isEmpty()) {
 						iterazioniTotali++;
 						contatoreTreni++;
-					} else {
-						if (treni.contains(treno2)) {
-							// aggiungo la stazione...
-							for (int q = 0; q < treni.size(); q++) {
-								if (treni.get(q).getCodiceTreno()
-										.equals(treno2.getCodiceTreno()))
-									treni.get(q).getTratta().add(stazione);
-								iterazioniTotali++;
-							}
-
-						} else {
-							treno2.getTratta().add(stazione);
-							treni.add(treno2);
-							iterazioniTotali++;
-							contatoreTreni++;
-						}
 					}
+
 				}
 			}
 
@@ -154,17 +151,35 @@ public class ParserFileInput {
 		f.close();
 	}
 
+	public static int contains2(long codiceTreno) {
+		for (int q = 0; q < treni.size(); q++) {
+			if (treni.get(q).getCodiceTreno().equals(codiceTreno))
+				return q;
+			iterazioniTotali++;
+		}
+		return -1;
+	}
+
 	public static void correttezzaDati() {
 		System.out.println("Iterazioni totali di tutti i for: "
 				+ iterazioniTotali);
 		System.out.println("Stazioni salvate " + contatore);
 		System.out.println("Treni salvati " + contatoreTreni);
 
-		System.out.println("SIZE Lista treni " + treni.size());
-		System.out.println("Lista Treni Totale");
-		// for (int i = 0; i < treni.size(); i++) {
+		// System.out.println("SIZE Lista treni " + treni.size());
+		// for (int i = 0; i < treni.size(); i++)
+		// if (treni.get(i).getCodiceTreno().equals(42L))
+		// System.out.println("treno presente");
+		//
+		// // System.out.println("Lista Treni Totale");
 
+		// for (int i = 0; i < treni.size(); i++) {
+		//
 		// System.out.println("Codice treno:" + treni.get(i).getCodiceTreno());
+		//
+		// System.out.println("  La tratta comprende "
+		// + treni.get(i).getTratta().size() + " stazioni.");
+		// }
 		// for (int j = 0; j < treni.get(i).getTratta().size(); j++) {
 		// // System.out.println("Tratta del treno:");
 		// System.out.println("Codice stazione attraversata:"

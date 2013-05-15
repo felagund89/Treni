@@ -29,7 +29,18 @@ public class Treno {
 	
 	
 	
-	
+	 public boolean equals(Object obj) {
+		    if (obj == null) {
+		      return false;
+		    }
+
+		    if (!(obj instanceof Treno)) {
+		      return false; 
+		    } 
+
+		    Treno t = (Treno) obj;
+		    return t.getCodiceTreno().equals(this.codiceTreno);
+		  }
 	
 	
 	
