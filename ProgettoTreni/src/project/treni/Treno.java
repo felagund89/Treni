@@ -42,7 +42,6 @@ public class Treno {
 		    return t.getCodiceTreno().equals(this.codiceTreno);
 		  }
 	  
-	 
 	
 	
 	
