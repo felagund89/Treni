@@ -93,7 +93,8 @@ public class ParserFileInput {
 				contatore++;
 
 				for (int x = 0; x < numTrenStaz; x++) { // scorro i treni della
-														// stazione
+								
+					// stazione
 					String treno = f.nextLine();
 					// System.out.println("stringaTreno" + treno);
 

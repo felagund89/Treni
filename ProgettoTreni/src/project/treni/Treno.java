@@ -41,7 +41,8 @@ public class Treno {
 		    Treno t = (Treno) obj;
 		    return t.getCodiceTreno().equals(this.codiceTreno);
 		  }
-	
+	  
+	 
 	
 	
 	
