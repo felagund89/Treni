@@ -17,6 +17,7 @@ import project.treni.Treno;
  * @author antonio
  * 
  */
+
 public class ParserFileInput {
 
 	private static long numeroTestCase = 0;
@@ -39,6 +40,8 @@ public class ParserFileInput {
 
 	private static List<Richiesta> richieste = new ArrayList<Richiesta>();
 
+	
+	
 	public ParserFileInput(File file) throws FileNotFoundException {
 
 		loadDati(file);
@@ -63,7 +66,7 @@ public class ParserFileInput {
 
 		System.out.println("numero test case" + numeroTestCase);
 
-		// scorro dati dnei vari testCase
+		// scorro dati nei vari testCase
 
 		// System.out.println(f.nextLine());
 
@@ -79,6 +82,7 @@ public class ParserFileInput {
 														// numero di stazioni
 														// del test case
 				iterazioniTotali++;
+
 				String staz = f.nextLine();
 				String datiStazione[] = staz.split(" ");
 
@@ -90,10 +94,11 @@ public class ParserFileInput {
 				stazione.setCodiceStazione(codStaz);
 				stazione.setNumeroTreni(numTrenStaz);
 				stazi = stazione;
+
 				contatore++;
 
 				for (int x = 0; x < numTrenStaz; x++) { // scorro i treni della
-								
+
 					// stazione
 					String treno = f.nextLine();
 					// System.out.println("stringaTreno" + treno);
@@ -111,7 +116,7 @@ public class ParserFileInput {
 					// } else
 					int valore = contains2(cod);
 					if (valore != -1) {
-						
+
 						// aggiungo la stazione...
 						treni.get(valore).getTratta().add(stazione);
 					}
@@ -123,8 +128,8 @@ public class ParserFileInput {
 						treno2.setOraArrivo(orArr);
 						treno2.setOraPartenza(orPar);
 						treno2.getTratta().add(stazione);
-
 						treni.add(treno2);
+
 						iterazioniTotali++;
 						contatoreTreni++;
 					}
@@ -151,6 +156,12 @@ public class ParserFileInput {
 		f.close();
 	}
 
+	
+	
+	/**
+	 * @param codiceTreno
+	 * @return
+	 */
 	public static int contains2(long codiceTreno) {
 		for (int q = 0; q < treni.size(); q++) {
 			if (treni.get(q).getCodiceTreno().equals(codiceTreno))
@@ -160,17 +171,31 @@ public class ParserFileInput {
 		return -1;
 	}
 
+	
+	
+	
+	
+	/**
+	 * @param indiceTreno
+	 */
+	public static void sortTratta(int indiceTreno) {
+		List<Stazione> tratta = treni.get(indiceTreno).getTratta();
+
+	}
+
+	
+	
+	
+	
+	/**
+	 * 
+	 */
 	public static void correttezzaDati() {
 		System.out.println("Iterazioni totali di tutti i for: "
 				+ iterazioniTotali);
 		System.out.println("Stazioni salvate " + contatore);
 		System.out.println("Treni salvati " + contatoreTreni);
 
-		// System.out.println("SIZE Lista treni " + treni.size());
-		// for (int i = 0; i < treni.size(); i++)
-		// if (treni.get(i).getCodiceTreno().equals(42L))
-		// System.out.println("treno presente");
-		//
 		// // System.out.println("Lista Treni Totale");
 
 		// for (int i = 0; i < treni.size(); i++) {

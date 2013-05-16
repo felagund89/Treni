@@ -8,44 +8,38 @@ import java.util.List;
 
 /**
  * @author antonio
- *
+ * 
  */
 
 public class Treno {
 
 	private Long codiceTreno;
-	
+
 	private Long oraArrivo;
-	
+
 	private Long oraPartenza;
-	
+
 	private List<Stazione> tratta = new ArrayList<Stazione>();
 
-	
-	public Treno(){
-		
-		
+	public Treno() {
+
 	}
-	
-	
-	
-	 public boolean equals(Object obj) {
-		    if (obj == null) {
-		      return false;
-		    }
 
-		    if (!(obj instanceof Treno)) {
-		      return false; 
-		    } 
+	// Se serve
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
 
-		    Treno t = (Treno) obj;
-		    return t.getCodiceTreno().equals(this.codiceTreno);
-		  }
-	  
-	
-	
-	
-	
+		if (!(obj instanceof Treno)) {
+			return false;
+		}
+
+		Treno t = (Treno) obj;
+		return t.getCodiceTreno().equals(this.codiceTreno);
+	}
+
 	public Long getCodiceTreno() {
 		return codiceTreno;
 	}
@@ -77,17 +71,5 @@ public class Treno {
 	public void setTratta(List<Stazione> tratta) {
 		this.tratta = tratta;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
