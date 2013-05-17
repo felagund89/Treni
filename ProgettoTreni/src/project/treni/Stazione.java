@@ -21,10 +21,6 @@ public class Stazione {
 		
 	}
 
-	
-	
-	
-	
 	/**
 	 * @return the testCaseAppartenenza
 	 */
@@ -65,9 +61,5 @@ public class Stazione {
 	 */
 	public void setNumeroTreni(Long numeroTreni) {
 		this.numeroTreni = numeroTreni;
-	}
-	
-	
-	
-	
+	}	
 }

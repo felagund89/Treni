@@ -25,7 +25,7 @@ public class Treno {
 
 	}
 
-	
+
 	// Se serve
 	@Override
 	public boolean equals(Object obj) {

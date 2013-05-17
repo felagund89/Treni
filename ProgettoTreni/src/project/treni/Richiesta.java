@@ -8,12 +8,12 @@ import java.util.List;
 
 /**
  * @author user
- *
+ * 
  */
 public class Richiesta {
 
 	private long codTestCase;
-	
+
 	private List<String> richiesteTestCase = new ArrayList<String>();
 
 	public long getCodTestCase() {
@@ -31,9 +31,4 @@ public class Richiesta {
 	public void setRichiesteTestCase(List<String> richiesteTestCase) {
 		this.richiesteTestCase = richiesteTestCase;
 	}
-	
-	
-	
-	
-	
 }
