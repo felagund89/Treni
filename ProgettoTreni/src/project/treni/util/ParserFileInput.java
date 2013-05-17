@@ -187,6 +187,7 @@ public class ParserFileInput {
 				return q;
 			iterazioniTotali++;
 		}
+
 		return -1;
 	}
 

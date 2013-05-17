@@ -20,7 +20,6 @@ public class Tratta {
 	long tempoPercorrenza;
 
 	public long getOraArr() {
-
 		return oraArr;
 	}
 
