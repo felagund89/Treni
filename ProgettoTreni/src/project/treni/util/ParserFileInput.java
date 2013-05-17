@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 import project.treni.Richiesta;
 import project.treni.Stazione;
+import project.treni.Tratta;
 import project.treni.Treno;
 
 /**
@@ -34,14 +35,14 @@ public class ParserFileInput {
 
 	private static Stazione stazi = new Stazione();
 
+	private static List<Tratta> tratte = new ArrayList<Tratta>(0);
+
 	private static Treno tren = new Treno();
 
 	private static List<Treno> treni = new ArrayList<Treno>(0);
 
 	private static List<Richiesta> richieste = new ArrayList<Richiesta>();
 
-	
-	
 	public ParserFileInput(File file) throws FileNotFoundException {
 
 		loadDati(file);
@@ -117,18 +118,39 @@ public class ParserFileInput {
 					int valore = contains2(cod);
 					if (valore != -1) {
 
-						// aggiungo la stazione...
+						// aggiungo la stazione...(vecchio metodo)
 						treni.get(valore).getTratta().add(stazione);
+
+						// nuovo metodo salvo i dati in oggetto tratta, ogni
+						// treno ha una lista di tratte che indica il suo
+						// percorso.
+						Tratta tratta = new Tratta();
+						tratta.setStaz(stazione);
+						tratta.setOraArr(orArr);
+						tratta.setOraPart(orPar);
+						treni.get(valore).getTratte().add(tratta);
 					}
 
 					else {
-						// treno2.getTratta().add(stazione);
+
+						// aggiungo treno
 						Treno treno2 = new Treno();
 						treno2.setCodiceTreno(cod);
 						treno2.setOraArrivo(orArr);
 						treno2.setOraPartenza(orPar);
-						treno2.getTratta().add(stazione);
 						treni.add(treno2);
+						// vecchio metodo
+						treno2.getTratta().add(stazione);
+
+						// nuovo metodo salvo i dati in oggetto tratta, ogni
+						// treno ha una lista di tratte che indica il suo
+						// percorso.
+						Tratta tratta = new Tratta();
+						tratta.setOraArr(orArr);
+						tratta.setOraPart(orPar);
+						tratta.setTreno(treno2);
+						tratta.setStaz(stazione);
+						tratte.add(tratta);
 
 						iterazioniTotali++;
 						contatoreTreni++;
@@ -155,8 +177,6 @@ public class ParserFileInput {
 		f.close();
 	}
 
-	
-	
 	/**
 	 * @param codiceTreno
 	 * @return
@@ -170,22 +190,17 @@ public class ParserFileInput {
 		return -1;
 	}
 
-	
-	
-	
-	
 	/**
 	 * @param indiceTreno
 	 */
 	public static void sortTratta(int indiceTreno) {
-		List<Stazione> tratta = treni.get(indiceTreno).getTratta();
+		// List<Stazione> tratta = treni.get(indiceTreno).getTratta();
+		// for (int j = 0; j < tratta.size(); j++) {
+		//
+		//
 
 	}
 
-	
-	
-	
-	
 	/**
 	 * 
 	 */
@@ -194,6 +209,15 @@ public class ParserFileInput {
 				+ iterazioniTotali);
 		System.out.println("Stazioni salvate " + contatore);
 		System.out.println("Treni salvati " + contatoreTreni);
+
+		// Stampo la tratta di ogni treno
+		for (int i = 0; i < treni.size(); i++) {
+			for (int j = 0; j < treni.get(i).getTratte().size(); j++) {
+				System.out.print("->"
+						+ treni.get(i).getTratte().get(j).getOraArr());
+			}
+			System.out.println(" ");
+		}
 
 		// // System.out.println("Lista Treni Totale");
 
@@ -277,6 +301,14 @@ public class ParserFileInput {
 
 	public static void setTreni(List<Treno> treni) {
 		ParserFileInput.treni = treni;
+	}
+
+	public static List<Tratta> getTratte() {
+		return tratte;
+	}
+
+	public static void setTratte(List<Tratta> tratta) {
+		ParserFileInput.tratte = tratta;
 	}
 
 }

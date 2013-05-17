@@ -19,12 +19,13 @@ public class Treno {
 
 	private Long oraPartenza;
 
+	private List<Tratta> tratte = new ArrayList<Tratta>();
+
 	private List<Stazione> tratta = new ArrayList<Stazione>();
 
 	public Treno() {
 
 	}
-
 
 	// Se serve
 	@Override
@@ -71,6 +72,14 @@ public class Treno {
 
 	public void setTratta(List<Stazione> tratta) {
 		this.tratta = tratta;
+	}
+
+	public List<Tratta> getTratte() {
+		return tratte;
+	}
+
+	public void setTratte(List<Tratta> tratte) {
+		this.tratte = tratte;
 	}
 
 }
