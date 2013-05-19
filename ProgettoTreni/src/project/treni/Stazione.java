@@ -8,22 +8,20 @@ import java.util.List;
 
 /**
  * @author antonio
- *
+ * 
  */
 public class Stazione {
 
 	private Long TestCaseAppartenenza;
 
 	private List<Tratta> tratte = new ArrayList<Tratta>();
-	
+
 	private Long codiceStazione;
-	
+
 	private Long numeroTreni;
-	
-	
-	
-	public Stazione(){
-		
+
+	public Stazione() {
+
 	}
 
 	/**
@@ -38,7 +36,8 @@ public class Stazione {
 	}
 
 	/**
-	 * @param testCaseAppartenenza the testCaseAppartenenza to set
+	 * @param testCaseAppartenenza
+	 *            the testCaseAppartenenza to set
 	 */
 	public void setTestCaseAppartenenza(Long testCaseAppartenenza) {
 		TestCaseAppartenenza = testCaseAppartenenza;
@@ -52,7 +51,8 @@ public class Stazione {
 	}
 
 	/**
-	 * @param codiceStazione the codiceStazione to set
+	 * @param codiceStazione
+	 *            the codiceStazione to set
 	 */
 	public void setCodiceStazione(Long codiceStazione) {
 		this.codiceStazione = codiceStazione;
@@ -66,9 +66,10 @@ public class Stazione {
 	}
 
 	/**
-	 * @param numeroTreni the numeroTreni to set
+	 * @param numeroTreni
+	 *            the numeroTreni to set
 	 */
 	public void setNumeroTreni(Long numeroTreni) {
 		this.numeroTreni = numeroTreni;
-	}	
+	}
 }

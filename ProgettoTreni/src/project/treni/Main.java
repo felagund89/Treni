@@ -3,26 +3,27 @@
  */
 package project.treni;
 
-import project.treni.util.ParserFileInput;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import project.treni.util.ParserFileInput;
+
 /**
  * @author antonio
- *
+ * 
  */
 public class Main {
 
 	/**
 	 * @param args
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException
 	 */
 	public static void main(String[] args) throws FileNotFoundException {
-//		String path = {"/home/user/Scrivania/Treni/src/project/treni/util/input.txt"};
-        File file =  new File("input.txt");
-        ParserFileInput parse = new ParserFileInput(file);
-       
+		// String path =
+		// {"/home/user/Scrivania/Treni/src/project/treni/util/input.txt"};
+		File file = new File("input.txt");
+		ParserFileInput parse = new ParserFileInput(file);
+
 	}
 
 }
