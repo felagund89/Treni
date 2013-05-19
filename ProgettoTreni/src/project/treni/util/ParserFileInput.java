@@ -216,13 +216,13 @@ public class ParserFileInput {
 		System.out.println("Treni salvati " + contatoreTreni);
 
 		// Stampo la tratta di ogni treno
-		for (int i = 0; i < treni.size(); i++) {
-			for (int j = 0; j < treni.get(i).getTratte().size(); j++) {
-				System.out.print("->"
-						+ treni.get(i).getTratte().get(j).getOraArr());
-			}
-			System.out.println(" ");
-		}
+		// for (int i = 0; i < treni.size(); i++) {
+		// for (int j = 0; j < treni.get(i).getTratte().size(); j++) {
+		// System.out.print("->"
+		// + treni.get(i).getTratte().get(j).getOraArr());
+		// }
+		// System.out.println(" ");
+		// }
 
 		// // System.out.println("Lista Treni Totale");
 
