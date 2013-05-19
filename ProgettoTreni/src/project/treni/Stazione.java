@@ -3,6 +3,9 @@
  */
 package project.treni;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author antonio
  *
@@ -10,6 +13,8 @@ package project.treni;
 public class Stazione {
 
 	private Long TestCaseAppartenenza;
+
+	private List<Tratta> tratte = new ArrayList<Tratta>();
 	
 	private Long codiceStazione;
 	
@@ -26,6 +31,10 @@ public class Stazione {
 	 */
 	public Long getTestCaseAppartenenza() {
 		return TestCaseAppartenenza;
+	}
+
+	public List<Tratta> getTratte() {
+		return tratte;
 	}
 
 	/**

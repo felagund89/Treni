@@ -20,7 +20,7 @@ public class Main {
 	 */
 	public static void main(String[] args) throws FileNotFoundException {
 //		String path = {"/home/user/Scrivania/Treni/src/project/treni/util/input.txt"};
-        File file =  new File("src/project/treni/util/input.txt");
+        File file =  new File("input.txt");
         ParserFileInput parse = new ParserFileInput(file);
        
 	}

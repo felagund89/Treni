@@ -129,6 +129,8 @@ public class ParserFileInput {
 						tratta.setOraArr(orArr);
 						tratta.setOraPart(orPar);
 						treni.get(valore).getTratte().add(tratta);
+						// test Yuri
+						stazione.getTratte().add(tratta);
 					}
 
 					else {
@@ -151,6 +153,8 @@ public class ParserFileInput {
 						tratta.setTreno(treno2);
 						tratta.setStaz(stazione);
 						tratte.add(tratta);
+						// test Yuri
+						stazione.getTratte().add(tratta);
 
 						iterazioniTotali++;
 						contatoreTreni++;
