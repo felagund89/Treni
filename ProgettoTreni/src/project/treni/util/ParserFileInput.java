@@ -172,7 +172,17 @@ public class ParserFileInput {
 
 			for (int s = 0; s < numeroRichieste; s++) {
 				iterazioniTotali++;
-				ric.getRichiesteTestCase().add(f.nextLine());
+				String richiesta = f.nextLine();
+				String stringaRichiesta[] = richiesta.split(" ");
+				String tipoRic = stringaRichiesta[0];
+
+				if (tipoRic.equals("MINTEMPO"))
+					ric.getRichiesteMinTempo().add(richiesta);
+				if (tipoRic.equals("MINORARIO"))
+					ric.getRichiesteMinOrari().add(richiesta);
+				if (tipoRic.equals("MINCAMBI"))
+					ric.getRichiesteMinScambi().add(richiesta);
+				// ric.getRichiesteTestCase().add(f.nextLine());
 			}
 
 			richieste.add(ric);
@@ -214,6 +224,24 @@ public class ParserFileInput {
 				+ iterazioniTotali);
 		System.out.println("Stazioni salvate " + contatore);
 		System.out.println("Treni salvati " + contatoreTreni);
+
+		// stampa richieste
+		// System.out.println("Richieste:");
+		// for (int n = 0; n < richieste.size(); n++) {
+		// for (int m = 0; m < richieste.get(n).getRichiesteMinTempo().size();
+		// m++)
+		// System.out.println("richiesta min tempo:"
+		// + richieste.get(n).getRichiesteMinTempo().get(m));
+		// for (int m = 0; m < richieste.get(n).getRichiesteMinOrari().size();
+		// m++)
+		// System.out.println("richiesta min orario:"
+		// + richieste.get(n).getRichiesteMinOrari().get(m));
+		// for (int m = 0; m < richieste.get(n).getRichiesteMinScambi().size();
+		// m++)
+		// System.out.println("richiesta min scambi:"
+		// + richieste.get(n).getRichiesteMinScambi().get(m));
+		//
+		// }
 
 		// Stampo la tratta di ogni treno
 		// for (int i = 0; i < treni.size(); i++) {
