@@ -3,16 +3,20 @@
  */
 package project.treni.util;
 
+import java.lang.Integer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Map;
+import java.util.HashMap;
 
 import project.treni.Richiesta;
 import project.treni.Stazione;
 import project.treni.Tratta;
 import project.treni.Treno;
+import project.treni.util.MinHeap;
 
 /**
  * @author antonio
@@ -32,6 +36,8 @@ public class ParserFileInput {
 	private static int contatoreTreni;
 
 	private static int iterazioniTotali;
+
+	private static Map<Integer, Stazione> stazioni = new HashMap<Integer, Stazione>();
 
 	private static Stazione stazi = new Stazione();
 
@@ -87,7 +93,7 @@ public class ParserFileInput {
 				String staz = f.nextLine();
 				String datiStazione[] = staz.split(" ");
 
-				long codStaz = Long.parseLong(datiStazione[0]);
+				int codStaz = Integer.parseInt(datiStazione[0]);
 				long numTrenStaz = Long.parseLong(datiStazione[1]);
 
 				Stazione stazione = new Stazione();
@@ -160,6 +166,9 @@ public class ParserFileInput {
 						contatoreTreni++;
 					}
 				}
+
+				stazione.setPeso(1); // TODO: Real weight
+				stazioni.put(stazione.getCodiceStazione(), stazione);
 			}
 
 			f.hasNextLine();
@@ -176,8 +185,53 @@ public class ParserFileInput {
 				String stringaRichiesta[] = richiesta.split(" ");
 				String tipoRic = stringaRichiesta[0];
 
-				if (tipoRic.equals("MINTEMPO"))
+				if (tipoRic.equals("MINTEMPO")) {
 					ric.getRichiesteMinTempo().add(richiesta);
+
+					// ATTENZIONE: Porcate sprovviste di segnaletica
+					System.out.println("-----------");
+					Stazione s1 = stazioni.get(Integer.parseInt(stringaRichiesta[1]));
+					Stazione s2 = stazioni.get(Integer.parseInt(stringaRichiesta[2]));
+					
+					// - Dist: array delle distanze, inizializzato a infinito
+					Map<Integer, Integer> dist = new HashMap<Integer, Integer>();
+					for(Map.Entry<Integer, Stazione> e : stazioni.entrySet())
+						dist.put(e.getKey(), Integer.MAX_VALUE);
+
+					// - P: vettore dei padri, inizializzato a 0
+					Map<Integer, Integer> p = new HashMap<Integer, Integer>();
+					for(Map.Entry<Integer, Stazione> e : stazioni.entrySet())
+						p.put(e.getKey(), 0);
+
+					// - Dist[u] <- 0
+					dist.put(s1.getCodiceStazione(), 0);
+
+					// - P[u] <- u
+					p.put(s1.getCodiceStazione(), s1.getCodiceStazione());
+
+					// - H <- min-heap inizializzato con tutti i nodi e le priorità sono i valori di Dist
+					MinHeap h = new MinHeap(new ArrayList<Stazione>(stazioni.values()));
+
+					// - WHILE H non è vuoto DO
+					while(!h.isEmpty()) {
+						// - v <- H.get_min() /* preleva il nodo con distanza minima */
+						Stazione stazione = h.min();
+						// - FOR ogni adiacente w di v DO
+						for(Tratta tratta : stazione.getTratte()) {
+							// - IF Dist[w] > Dist[v] + p(v, w) THEN
+
+						}
+					}
+
+
+					System.out.println("dist -------------- " + dist.size());
+					System.out.println(dist);
+					
+					System.out.println("p --------------" + p.size());
+					System.out.println(p);
+
+					System.exit(0);
+				}
 				if (tipoRic.equals("MINORARIO"))
 					ric.getRichiesteMinOrari().add(richiesta);
 				if (tipoRic.equals("MINCAMBI"))

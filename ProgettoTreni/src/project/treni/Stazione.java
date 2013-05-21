@@ -16,9 +16,11 @@ public class Stazione {
 
 	private List<Tratta> tratte = new ArrayList<Tratta>();
 
-	private Long codiceStazione;
+	private int codiceStazione;
 
 	private Long numeroTreni;
+
+	private Integer peso;
 
 	public Stazione() {
 
@@ -46,7 +48,7 @@ public class Stazione {
 	/**
 	 * @return the codiceStazione
 	 */
-	public Long getCodiceStazione() {
+	public int getCodiceStazione() {
 		return codiceStazione;
 	}
 
@@ -54,7 +56,7 @@ public class Stazione {
 	 * @param codiceStazione
 	 *            the codiceStazione to set
 	 */
-	public void setCodiceStazione(Long codiceStazione) {
+	public void setCodiceStazione(int codiceStazione) {
 		this.codiceStazione = codiceStazione;
 	}
 
@@ -71,5 +73,20 @@ public class Stazione {
 	 */
 	public void setNumeroTreni(Long numeroTreni) {
 		this.numeroTreni = numeroTreni;
+	}
+
+	/**
+	 * @return the peso
+	 */
+	public Integer getPeso() {
+		return peso;
+	}
+
+	/**
+	 * @param peso
+	 *            the peso to set
+	 */
+	public void setPeso(Integer peso) {
+		this.peso = peso;
 	}
 }
