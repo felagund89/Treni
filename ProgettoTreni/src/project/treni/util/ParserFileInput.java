@@ -189,6 +189,8 @@ public class ParserFileInput {
 					ric.getRichiesteMinTempo().add(richiesta);
 
 					// ATTENZIONE: Porcate sprovviste di segnaletica
+					// A parte scherzi, questa roba è qui solo per comodità.
+					// VA SPOSTATA OVVIAMENTE :)
 					System.out.println("-----------");
 					Stazione s1 = stazioni.get(Integer.parseInt(stringaRichiesta[1]));
 					Stazione s2 = stazioni.get(Integer.parseInt(stringaRichiesta[2]));
@@ -215,11 +217,20 @@ public class ParserFileInput {
 					// - WHILE H non è vuoto DO
 					while(!h.isEmpty()) {
 						// - v <- H.get_min() /* preleva il nodo con distanza minima */
-						Stazione stazione = h.min();
+						Stazione v = h.min();
 						// - FOR ogni adiacente w di v DO
-						for(Tratta tratta : stazione.getTratte()) {
-							// - IF Dist[w] > Dist[v] + p(v, w) THEN
+						for(Tratta w : v.getTratte()) {
+							// TODO: settare il peso a ogni w.stazione
 
+							// - IF Dist[w] > Dist[v] + p(v, w) THEN
+							if(dist.get(w.getStazione().getCodiceStazione()) > dist.get(v.getCodiceStazione()) + (v.getPeso() + w.getStazione().getPeso())) {
+								// - Dist[w] <- Dist[v] + p(v, w)
+								dist.put(w.getStazione().getCodiceStazione(), dist.get(v.getCodiceStazione()) + (v.getPeso() + w.getStazione().getPeso()));
+								// - P[w] <- v
+								p.put(w.getStazione().getCodiceStazione(), v);
+								// - H.decrease(w) /* aggiorna l'heap a seguito del decremento */
+								// TODO: Ho troppo sonno per capire come decreasare l'heap ora...
+							}
 						}
 					}
 
@@ -231,6 +242,7 @@ public class ParserFileInput {
 					System.out.println(p);
 
 					System.exit(0);
+					// Fine porcate
 				}
 				if (tipoRic.equals("MINORARIO"))
 					ric.getRichiesteMinOrari().add(richiesta);
