@@ -3,20 +3,23 @@
  */
 package project.treni.util;
 
-import java.lang.Integer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Map;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
 import project.treni.Richiesta;
 import project.treni.Stazione;
 import project.treni.Tratta;
 import project.treni.Treno;
-import project.treni.util.MinHeap;
 
 /**
  * @author antonio
@@ -167,7 +170,7 @@ public class ParserFileInput {
 					}
 				}
 
-				stazione.setPeso(1); // TODO: Real weight
+				stazione.setPeso(0); // TODO: Real weight
 				stazioni.put(stazione.getCodiceStazione(), stazione);
 			}
 
@@ -175,10 +178,9 @@ public class ParserFileInput {
 
 			numeroRichieste = ((Long.parseLong(f.nextLine())));
 			System.out.println("numeroRichieste" + numeroRichieste);
-
+			sortTratta();
 			Richiesta ric = new Richiesta();
 			ric.setCodTestCase(i + 1);
-
 			for (int s = 0; s < numeroRichieste; s++) {
 				iterazioniTotali++;
 				String richiesta = f.nextLine();
@@ -187,22 +189,23 @@ public class ParserFileInput {
 
 				if (tipoRic.equals("MINTEMPO")) {
 					ric.getRichiesteMinTempo().add(richiesta);
-
 					// ATTENZIONE: Porcate sprovviste di segnaletica
 					// A parte scherzi, questa roba è qui solo per comodità.
 					// VA SPOSTATA OVVIAMENTE :)
 					System.out.println("-----------");
-					Stazione s1 = stazioni.get(Integer.parseInt(stringaRichiesta[1]));
-					Stazione s2 = stazioni.get(Integer.parseInt(stringaRichiesta[2]));
-					
+					Stazione s1 = stazioni.get(Integer
+							.parseInt(stringaRichiesta[1]));
+					Stazione s2 = stazioni.get(Integer
+							.parseInt(stringaRichiesta[2]));
+
 					// - Dist: array delle distanze, inizializzato a infinito
 					Map<Integer, Integer> dist = new HashMap<Integer, Integer>();
-					for(Map.Entry<Integer, Stazione> e : stazioni.entrySet())
+					for (Map.Entry<Integer, Stazione> e : stazioni.entrySet())
 						dist.put(e.getKey(), Integer.MAX_VALUE);
 
 					// - P: vettore dei padri, inizializzato a 0
 					Map<Integer, Integer> p = new HashMap<Integer, Integer>();
-					for(Map.Entry<Integer, Stazione> e : stazioni.entrySet())
+					for (Map.Entry<Integer, Stazione> e : stazioni.entrySet())
 						p.put(e.getKey(), 0);
 
 					// - Dist[u] <- 0
@@ -211,33 +214,44 @@ public class ParserFileInput {
 					// - P[u] <- u
 					p.put(s1.getCodiceStazione(), s1.getCodiceStazione());
 
-					// - H <- min-heap inizializzato con tutti i nodi e le priorità sono i valori di Dist
-					MinHeap h = new MinHeap(new ArrayList<Stazione>(stazioni.values()));
+					// - H <- min-heap inizializzato con tutti i nodi e le
+					// priorità sono i valori di Dist
+					MinHeap h = new MinHeap(new ArrayList<Stazione>(
+							stazioni.values()));
 
 					// - WHILE H non è vuoto DO
-					while(!h.isEmpty()) {
-						// - v <- H.get_min() /* preleva il nodo con distanza minima */
+					while (!h.isEmpty()) {
+						// - v <- H.get_min() /* preleva il nodo con distanza
+						// minima */
 						Stazione v = h.min();
 						// - FOR ogni adiacente w di v DO
-						for(Tratta w : v.getTratte()) {
+						for (Tratta w : v.getTratte()) {
 							// TODO: settare il peso a ogni w.stazione
 
 							// - IF Dist[w] > Dist[v] + p(v, w) THEN
-							if(dist.get(w.getStazione().getCodiceStazione()) > dist.get(v.getCodiceStazione()) + (v.getPeso() + w.getStazione().getPeso())) {
+							if (dist.get(w.getStaz().getCodiceStazione()) > dist
+									.get(v.getCodiceStazione())
+									+ (v.getPeso() + w.getStaz().getPeso())) {
 								// - Dist[w] <- Dist[v] + p(v, w)
-								dist.put(w.getStazione().getCodiceStazione(), dist.get(v.getCodiceStazione()) + (v.getPeso() + w.getStazione().getPeso()));
+								dist.put(
+										w.getStaz().getCodiceStazione(),
+										dist.get(v.getCodiceStazione())
+												+ (v.getPeso() + w.getStaz()
+														.getPeso()));
 								// - P[w] <- v
-								p.put(w.getStazione().getCodiceStazione(), v);
-								// - H.decrease(w) /* aggiorna l'heap a seguito del decremento */
-								// TODO: Ho troppo sonno per capire come decreasare l'heap ora...
+								p.put(w.getStaz().getCodiceStazione(),
+										v.getCodiceStazione());
+								// - H.decrease(w) /* aggiorna l'heap a seguito
+								// del decremento */
+								// TODO: Ho troppo sonno per capire come
+								// decreasare l'heap ora...
 							}
 						}
 					}
 
-
 					System.out.println("dist -------------- " + dist.size());
 					System.out.println(dist);
-					
+
 					System.out.println("p --------------" + p.size());
 					System.out.println(p);
 
@@ -271,14 +285,34 @@ public class ParserFileInput {
 		return -1;
 	}
 
-	/**
-	 * @param indiceTreno
-	 */
-	public static void sortTratta(int indiceTreno) {
-		// List<Stazione> tratta = treni.get(indiceTreno).getTratta();
-		// for (int j = 0; j < tratta.size(); j++) {
-		//
-		//
+	@SuppressWarnings("unchecked")
+	public static void sortTratta() {
+
+		// che merda!!
+		List<Stazione> lista = treni.get(1).getTratta();
+
+		Collections.sort(lista, new Comparator() {
+
+			public long compare(long ora1, long ora2) {
+
+				if (ora1 == ora2)
+					return 0;
+				return ora1 < ora2 ? -1 : 1;
+
+			}
+
+			@Override
+			public int compare(Object o1, Object o2) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+		});
+
+		Set<Stazione> set = new TreeSet<Stazione>();
+		set.addAll(treni.get(1).getTratta());
+		Iterator<Stazione> iterator = set.iterator();
+		System.out.println("tratta " + iterator.next().toString());
 
 	}
 
