@@ -21,35 +21,27 @@ public class MinHeap {
         }
     }
 
-    public void add(Stazione node) {
-        h.add(null);
-        int k = h.size() - 1;
-        while (k > 0) {
-            int parent = (k - 1) / 2;
-            Stazione p = h.get(parent);
-            if (node.getPeso().compareTo(p.getPeso()) >= 0) {
-                break;
-            }
-            h.set(k, p);
-            k = parent;
-        }
-        h.set(k, node);
-    }
+	public void add(Stazione node) {
+		h.add(null);
+		int k = h.size() - 1;
+		while (k > 0) {
+			int parent = (k - 1) / 2;
+			Stazione p = h.get(parent);
+			if (node.getPeso().compareTo(p.getPeso()) >= 0) {
+				break;
+			}
+			h.set(k, p);
+			k = parent;
+		}
+		h.set(k, node);
+	}
 
-    public Stazione remove() {
-        Stazione removedNode = h.get(0);
-        Stazione lastNode = h.remove(h.size() - 1);
-        percolateDown(0, lastNode);
-        return removedNode;
-    }
-
-    public Stazione min() {
-        return h.get(0);
-    }
-
-    public boolean isEmpty() {
-        return h.isEmpty();
-    }
+	public Stazione remove() {
+		Stazione removedNode = h.get(0);
+		Stazione lastNode = h.remove(h.size() - 1);
+		percolateDown(0, lastNode);
+		return removedNode;
+	}
 
     void percolateDown(int k, Stazione node) {
         if (h.isEmpty()) {
