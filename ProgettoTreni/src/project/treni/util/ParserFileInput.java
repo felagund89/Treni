@@ -44,8 +44,6 @@ public class ParserFileInput {
 
 	private static List<Tratta> tratte = new ArrayList<Tratta>(0);
 
-	private static Treno tren = new Treno();
-
 	private static List<Treno> treni = new ArrayList<Treno>(0);
 
 	private static List<Richiesta> richieste = new ArrayList<Richiesta>();
@@ -408,22 +406,6 @@ public class ParserFileInput {
 
 	public static void setContatore(int contatore) {
 		ParserFileInput.contatore = contatore;
-	}
-
-	public static Stazione getStazi() {
-		return stazi;
-	}
-
-	public static void setStazi(Stazione stazi) {
-		ParserFileInput.stazi = stazi;
-	}
-
-	public static Treno getTren() {
-		return tren;
-	}
-
-	public static void setTren(Treno tren) {
-		ParserFileInput.tren = tren;
 	}
 
 	public static List<Treno> getTreni() {
