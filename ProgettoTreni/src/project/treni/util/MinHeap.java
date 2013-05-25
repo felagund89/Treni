@@ -1,17 +1,20 @@
-package project.treni;
+package project.treni.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import project.treni.Stazione;
 
 public class MinHeap {
     List<Stazione> h = new ArrayList<Stazione>();
-        public MinHeap() {
+
+    public MinHeap() {
     }
 
-    public MinHeap(Stazione[] keys) {
-        for (Stazione key : keys) {
+    public MinHeap(ArrayList<Stazione> arrayList) {
+        for (Stazione key : arrayList) {
             h.add(key);
+
         }
         for (int k = h.size() / 2 - 1; k >= 0; k--) {
             percolateDown(k, h.get(k));
@@ -54,7 +57,9 @@ public class MinHeap {
         }
         while (k < h.size() / 2) {
             Integer child = 2 * k + 1;
-            if (child < h.size() - 1 && h.get(child).getPeso().compareTo(h.get(child + 1).getPeso()) > 0) {
+            if (child < h.size() - 1
+                    && h.get(child).getPeso()
+                            .compareTo(h.get(child + 1).getPeso()) > 0) {
                 child++;
             }
             if (node.getPeso().compareTo(h.get(child).getPeso()) <= 0) {

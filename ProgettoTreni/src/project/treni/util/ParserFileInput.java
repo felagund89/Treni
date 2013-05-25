@@ -85,6 +85,9 @@ public class ParserFileInput {
 
 			System.out.println("numero staz" + numeroStazioni);
 
+			List<Long> testa = new ArrayList<Long>(0);
+			List<Long> testp = new ArrayList<Long>(0);
+
 			for (int j = 0; j < numeroStazioni; j++) { // per i che va da 0 al
 														// numero di stazioni
 														// del test case
@@ -115,6 +118,13 @@ public class ParserFileInput {
 					long cod = Long.parseLong(stringaTreno[0]);
 					long orArr = Long.parseLong(stringaTreno[1]);
 					long orPar = Long.parseLong(stringaTreno[2]);
+
+					if(orArr != -1 && testa.contains(orArr))
+						System.out.println("Orario di arrivo già presente: " + orArr);
+					testa.add(orArr);
+					if(orPar != -1 && testp.contains(orPar))
+						System.out.println("Orario di partenza già presente: " + orPar);
+					testp.add(orPar);
 
 					// if (treni.isEmpty()) {
 					// treni.add(treno2);
@@ -220,16 +230,16 @@ public class ParserFileInput {
 						Stazione v = h.min();
 						// - FOR ogni adiacente w di v DO
 						for(Tratta w : v.getTratte()) {
-							// TODO: settare il peso a ogni w.stazione
+							// TODO: settare il peso a ogni w.stazione e aggiornare l'heap con remove+add
 
 							// - IF Dist[w] > Dist[v] + p(v, w) THEN
-							if(dist.get(w.getStazione().getCodiceStazione()) > dist.get(v.getCodiceStazione()) + (v.getPeso() + w.getStazione().getPeso())) {
+							if(dist.get(w.getStaz().getCodiceStazione()) > dist.get(v.getCodiceStazione()) + (v.getPeso() + w.getStaz().getPeso())) {
 								// - Dist[w] <- Dist[v] + p(v, w)
-								dist.put(w.getStazione().getCodiceStazione(), dist.get(v.getCodiceStazione()) + (v.getPeso() + w.getStazione().getPeso()));
+								dist.put(w.getStaz().getCodiceStazione(), dist.get(v.getCodiceStazione()) + (v.getPeso() + w.getStaz().getPeso()));
 								// - P[w] <- v
-								p.put(w.getStazione().getCodiceStazione(), v);
+								p.put(w.getStaz().getCodiceStazione(), v.getCodiceStazione());
 								// - H.decrease(w) /* aggiorna l'heap a seguito del decremento */
-								// TODO: Ho troppo sonno per capire come decreasare l'heap ora...
+								h.remove();
 							}
 						}
 					}
