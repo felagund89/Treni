@@ -43,6 +43,14 @@ public class MinHeap {
 		return removedNode;
 	}
 
+    public Stazione min() {
+        return h.get(0);
+    }
+
+    public boolean isEmpty() {
+        return h.isEmpty();
+    }
+
     void percolateDown(int k, Stazione node) {
         if (h.isEmpty()) {
             return;
