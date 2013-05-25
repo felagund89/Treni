@@ -12,13 +12,13 @@ import java.util.List;
  */
 public class Stazione {
 
-	private Long TestCaseAppartenenza;
+	private Integer TestCaseAppartenenza;
 
 	private List<Tratta> tratte = new ArrayList<Tratta>();
 
-	private int codiceStazione;
+	private Integer codiceStazione;
 
-	private Long numeroTreni;
+	private Integer numeroTreni;
 
 	private Integer peso;
 
@@ -29,7 +29,7 @@ public class Stazione {
 	/**
 	 * @return the testCaseAppartenenza
 	 */
-	public Long getTestCaseAppartenenza() {
+	public Integer getTestCaseAppartenenza() {
 		return TestCaseAppartenenza;
 	}
 
@@ -41,14 +41,14 @@ public class Stazione {
 	 * @param testCaseAppartenenza
 	 *            the testCaseAppartenenza to set
 	 */
-	public void setTestCaseAppartenenza(Long testCaseAppartenenza) {
+	public void setTestCaseAppartenenza(Integer testCaseAppartenenza) {
 		TestCaseAppartenenza = testCaseAppartenenza;
 	}
 
 	/**
 	 * @return the codiceStazione
 	 */
-	public int getCodiceStazione() {
+	public Integer getCodiceStazione() {
 		return codiceStazione;
 	}
 
@@ -56,14 +56,14 @@ public class Stazione {
 	 * @param codiceStazione
 	 *            the codiceStazione to set
 	 */
-	public void setCodiceStazione(int codiceStazione) {
+	public void setCodiceStazione(Integer codiceStazione) {
 		this.codiceStazione = codiceStazione;
 	}
 
 	/**
 	 * @return the numeroTreni
 	 */
-	public Long getNumeroTreni() {
+	public Integer getNumeroTreni() {
 		return numeroTreni;
 	}
 
@@ -71,7 +71,7 @@ public class Stazione {
 	 * @param numeroTreni
 	 *            the numeroTreni to set
 	 */
-	public void setNumeroTreni(Long numeroTreni) {
+	public void setNumeroTreni(Integer numeroTreni) {
 		this.numeroTreni = numeroTreni;
 	}
 
