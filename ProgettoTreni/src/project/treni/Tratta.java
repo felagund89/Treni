@@ -13,25 +13,25 @@ public class Tratta {
 
 	Stazione staz;
 
-	long oraArr;
+	short oraArr;
 
-	long oraPart;
+	short oraPart;
 
 	long tempoPercorrenza;
 
-	public long getOraArr() {
+	public short getOraArr() {
 		return oraArr;
 	}
 
-	public void setOraArr(long oraArr) {
+	public void setOraArr(short oraArr) {
 		this.oraArr = oraArr;
 	}
 
-	public long getOraPart() {
+	public short getOraPart() {
 		return oraPart;
 	}
 
-	public void setOraPart(long oraPart) {
+	public void setOraPart(short oraPart) {
 		this.oraPart = oraPart;
 	}
 

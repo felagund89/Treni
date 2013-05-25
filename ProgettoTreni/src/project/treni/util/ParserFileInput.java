@@ -8,10 +8,11 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
@@ -28,17 +29,19 @@ import project.treni.Treno;
 
 public class ParserFileInput {
 
-	private static long numeroTestCase = 0;
+	private static int numeroTestCase = 0;
 
-	private static long numeroStazioni = 0;
+	private static int numeroStazioni = 0;
 
-	private static long numeroRichieste = 0;
+	private static int numeroRichieste = 0;
 
 	private static int contatore;
 
 	private static int contatoreTreni;
 
 	private static int iterazioniTotali;
+
+	private static Map<Integer, Map> rete = new HashMap<Integer, Map>();
 
 	private static Map<Integer, Stazione> stazioni = new HashMap<Integer, Stazione>();
 
@@ -68,7 +71,7 @@ public class ParserFileInput {
 		// ricavo numero test case
 		f.hasNextLine();
 
-		numeroTestCase = (Long.parseLong(f.nextLine()));
+		numeroTestCase = (Integer.parseInt(f.nextLine()));
 
 		System.out.println("numero test case" + numeroTestCase);
 
@@ -80,12 +83,9 @@ public class ParserFileInput {
 			iterazioniTotali++;
 			System.out.println(f.nextLine());
 
-			numeroStazioni = (Long.parseLong(f.nextLine()));
+			numeroStazioni = (Integer.parseInt(f.nextLine()));
 
 			System.out.println("numero staz" + numeroStazioni);
-
-			List<Long> testa = new ArrayList<Long>(0);
-			List<Long> testp = new ArrayList<Long>(0);
 
 			for (int j = 0; j < numeroStazioni; j++) { // per i che va da 0 al
 														// numero di stazioni
@@ -96,7 +96,7 @@ public class ParserFileInput {
 				String datiStazione[] = staz.split(" ");
 
 				int codStaz = Integer.parseInt(datiStazione[0]);
-				long numTrenStaz = Long.parseLong(datiStazione[1]);
+				int numTrenStaz = Integer.parseInt(datiStazione[1]);
 
 				Stazione stazione = new Stazione();
 
@@ -108,71 +108,37 @@ public class ParserFileInput {
 				for (int x = 0; x < numTrenStaz; x++) { // scorro i treni della
 
 					// stazione
-					String treno = f.nextLine();
+					String lineaTreno = f.nextLine();
 					// System.out.println("stringaTreno" + treno);
 
-					String stringaTreno[] = treno.split(" ");
+					String stringaTreno[] = lineaTreno.split(" ");
 
-					long cod = Long.parseLong(stringaTreno[0]);
-					long orArr = Long.parseLong(stringaTreno[1]);
-					long orPar = Long.parseLong(stringaTreno[2]);
+					int cod = Integer.parseInt(stringaTreno[0]);
+					short orArr = Short.parseShort(stringaTreno[1]);
+					short orPar = Short.parseShort(stringaTreno[2]);
 
-					if(orArr != -1 && testa.contains(orArr))
-						System.out.println("Orario di arrivo già presente: " + orArr);
-					testa.add(orArr);
-					if(orPar != -1 && testp.contains(orPar))
-						System.out.println("Orario di partenza già presente: " + orPar);
-					testp.add(orPar);
+					Treno treno = new Treno();
+					treno.setCodiceTreno(cod);
+					treno.setOraArrivo(orArr);
+					treno.setOraPartenza(orPar);
+					treni.add(treno);
 
-					// if (treni.isEmpty()) {
-					// treni.add(treno2);
-					// iterazioniTotali++;
-					// contatoreTreni++;
-					// } else
-					int valore = contains2(cod);
-					if (valore != -1) {
+					Tratta tratta = new Tratta();
+					tratta.setStaz(stazione);
+					tratta.setOraArr(orArr);
+					tratta.setOraPart(orPar);
+					tratta.setTreno(treno);
+					
+					stazione.getTratte().add(tratta);
 
-						// aggiungo la stazione...(vecchio metodo)
-						treni.get(valore).getTratta().add(stazione);
-
-						// nuovo metodo salvo i dati in oggetto tratta, ogni
-						// treno ha una lista di tratte che indica il suo
-						// percorso.
-						Tratta tratta = new Tratta();
-						tratta.setStaz(stazione);
-						tratta.setOraArr(orArr);
-						tratta.setOraPart(orPar);
-						treni.get(valore).getTratte().add(tratta);
-						// test Yuri
-						stazione.getTratte().add(tratta);
-					}
-
-					else {
-
-						// aggiungo treno
-						Treno treno2 = new Treno();
-						treno2.setCodiceTreno(cod);
-						treno2.setOraArrivo(orArr);
-						treno2.setOraPartenza(orPar);
-						treni.add(treno2);
-						// vecchio metodo
-						treno2.getTratta().add(stazione);
-
-						// nuovo metodo salvo i dati in oggetto tratta, ogni
-						// treno ha una lista di tratte che indica il suo
-						// percorso.
-						Tratta tratta = new Tratta();
-						tratta.setOraArr(orArr);
-						tratta.setOraPart(orPar);
-						tratta.setTreno(treno2);
-						tratta.setStaz(stazione);
-						tratte.add(tratta);
-						// test Yuri
-						stazione.getTratte().add(tratta);
-
-						iterazioniTotali++;
-						contatoreTreni++;
-					}
+					// Popolo la mappa
+					Map<Short, Tratta> tratte;
+					if(rete.containsKey(treno.getCodiceTreno()))
+						tratte = rete.get(treno.getCodiceTreno());
+					else
+						tratte = new TreeMap<Short, Tratta>();
+					tratte.put(orArr, tratta);
+					rete.put(treno.getCodiceTreno(), tratte);
 				}
 
 				stazione.setPeso(0); // TODO: Real weight
@@ -181,9 +147,9 @@ public class ParserFileInput {
 
 			f.hasNextLine();
 
-			numeroRichieste = ((Long.parseLong(f.nextLine())));
+			numeroRichieste = Integer.parseInt(f.nextLine());
 			System.out.println("numeroRichieste" + numeroRichieste);
-			sortTratta();
+
 			Richiesta ric = new Richiesta();
 			ric.setCodTestCase(i + 1);
 			for (int s = 0; s < numeroRichieste; s++) {
@@ -198,10 +164,8 @@ public class ParserFileInput {
 					// A parte scherzi, questa roba è qui solo per comodità.
 					// VA SPOSTATA OVVIAMENTE :)
 					System.out.println("-----------");
-					Stazione s1 = stazioni.get(Integer
-							.parseInt(stringaRichiesta[1]));
-					Stazione s2 = stazioni.get(Integer
-							.parseInt(stringaRichiesta[2]));
+					Stazione s1 = stazioni.get(Integer.parseInt(stringaRichiesta[1]));
+					Stazione s2 = stazioni.get(Integer.parseInt(stringaRichiesta[2]));
 
 					// - Dist: array delle distanze, inizializzato a infinito
 					Map<Integer, Integer> dist = new HashMap<Integer, Integer>();
@@ -268,51 +232,6 @@ public class ParserFileInput {
 	}
 
 	/**
-	 * @param codiceTreno
-	 * @return
-	 */
-	public static int contains2(long codiceTreno) {
-		for (int q = 0; q < treni.size(); q++) {
-			if (treni.get(q).getCodiceTreno().equals(codiceTreno))
-				return q;
-			iterazioniTotali++;
-		}
-
-		return -1;
-	}
-
-	@SuppressWarnings("unchecked")
-	public static void sortTratta() {
-
-		// che merda!!
-		List<Stazione> lista = treni.get(1).getTratta();
-
-		Collections.sort(lista, new Comparator() {
-
-			public long compare(long ora1, long ora2) {
-
-				if (ora1 == ora2)
-					return 0;
-				return ora1 < ora2 ? -1 : 1;
-
-			}
-
-			@Override
-			public int compare(Object o1, Object o2) {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-
-		});
-
-		Set<Stazione> set = new TreeSet<Stazione>();
-		set.addAll(treni.get(1).getTratta());
-		Iterator<Stazione> iterator = set.iterator();
-		System.out.println("tratta " + iterator.next().toString());
-
-	}
-
-	/**
 	 * 
 	 */
 	public static void correttezzaDati() {
@@ -368,19 +287,19 @@ public class ParserFileInput {
 
 	}
 
-	public static long getNumeroTestCase() {
+	public static Integer getNumeroTestCase() {
 		return numeroTestCase;
 	}
 
-	public static void setNumeroTestCase(long numeroTestCase) {
+	public static void setNumeroTestCase(Integer numeroTestCase) {
 		ParserFileInput.numeroTestCase = numeroTestCase;
 	}
 
-	public static long getNumeroRichieste() {
+	public static Integer getNumeroRichieste() {
 		return numeroRichieste;
 	}
 
-	public static void setNumeroRichieste(long numeroRichieste) {
+	public static void setNumeroRichieste(Integer numeroRichieste) {
 		ParserFileInput.numeroRichieste = numeroRichieste;
 	}
 
@@ -392,11 +311,11 @@ public class ParserFileInput {
 		ParserFileInput.richieste = richieste;
 	}
 
-	public static long getNumeroStazioni() {
+	public static Integer getNumeroStazioni() {
 		return numeroStazioni;
 	}
 
-	public static void setNumeroStazioni(long numeroStazioni) {
+	public static void setNumeroStazioni(Integer numeroStazioni) {
 		ParserFileInput.numeroStazioni = numeroStazioni;
 	}
 

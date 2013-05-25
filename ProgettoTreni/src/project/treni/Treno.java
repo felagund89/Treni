@@ -13,11 +13,11 @@ import java.util.List;
 
 public class Treno {
 
-	private Long codiceTreno;
+	private Integer codiceTreno;
 
-	private Long oraArrivo;
+	private Short oraArrivo;
 
-	private Long oraPartenza;
+	private Short oraPartenza;
 
 	private List<Tratta> tratte = new ArrayList<Tratta>();
 
@@ -42,27 +42,27 @@ public class Treno {
 		return t.getCodiceTreno().equals(this.codiceTreno);
 	}
 
-	public Long getCodiceTreno() {
+	public Integer getCodiceTreno() {
 		return codiceTreno;
 	}
 
-	public void setCodiceTreno(Long codiceTreno) {
+	public void setCodiceTreno(Integer codiceTreno) {
 		this.codiceTreno = codiceTreno;
 	}
 
-	public Long getOraArrivo() {
+	public Short getOraArrivo() {
 		return oraArrivo;
 	}
 
-	public void setOraArrivo(Long oraArrivo) {
+	public void setOraArrivo(Short oraArrivo) {
 		this.oraArrivo = oraArrivo;
 	}
 
-	public Long getOraPartenza() {
+	public Short getOraPartenza() {
 		return oraPartenza;
 	}
 
-	public void setOraPartenza(Long oraPartenza) {
+	public void setOraPartenza(Short oraPartenza) {
 		this.oraPartenza = oraPartenza;
 	}
 
