@@ -6,16 +6,11 @@ package project.treni.util;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.TreeMap;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.TreeMap;
 
 import project.treni.Richiesta;
 import project.treni.Stazione;
@@ -161,6 +156,7 @@ public class ParserFileInput {
 				if (tipoRic.equals("MINTEMPO")) {
 					ric.getRichiesteMinTempo().add(richiesta);
 					// ATTENZIONE: Porcate sprovviste di segnaletica
+					
 					// A parte scherzi, questa roba è qui solo per comodità.
 					// VA SPOSTATA OVVIAMENTE :)
 					System.out.println("-----------");
@@ -196,7 +192,19 @@ public class ParserFileInput {
 						// - FOR ogni adiacente w di v DO
 						for(Tratta w : v.getTratte()) {
 							// TODO: settare il peso a ogni w.stazione e aggiornare l'heap con remove+add
-
+							
+							//per settare il peso, prendo la lista delle stazioni attraversate dal treno preso in considerazione
+							// scorro la mappa delle stazioni attraversate e setto il peso prendendo o il minore delle ore di partenza maggiori rispetto a v
+							//oppure l`ora di arrivo minore rispetto a V, settato il peso lo aggiorno nella tratta w, e faccio cosi man mano per ogni tratta w
+							//alla fine verra presa la tratta con peso minore.
+							
+							int appoggio = 0;
+							
+							while( rete.get(w.getTreno().getCodiceTreno()).isEmpty()){
+								
+								
+							}
+							
 							// - IF Dist[w] > Dist[v] + p(v, w) THEN
 							if(dist.get(w.getStaz().getCodiceStazione()) > dist.get(v.getCodiceStazione()) + (v.getPeso() + w.getStaz().getPeso())) {
 								// - Dist[w] <- Dist[v] + p(v, w)
