@@ -127,9 +127,9 @@ public class ParserFileInput {
 					stazione.getTratte().add(tratta);
 
 					// Popolo la mappa
-					Map<Short, Tratta> tratte;
+					TreeMap<Short, Tratta> tratte;
 					if(rete.containsKey(treno.getCodiceTreno()))
-						tratte = rete.get(treno.getCodiceTreno());
+						tratte = (TreeMap<Short, Tratta>) rete.get(treno.getCodiceTreno());
 					else
 						tratte = new TreeMap<Short, Tratta>();
 					tratte.put(orArr, tratta);
@@ -199,11 +199,18 @@ public class ParserFileInput {
 							//alla fine verra presa la tratta con peso minore.
 							
 							int appoggio = 0;
+//							System.out.println(rete.get(10).get(Short.parseShort("291")).getClass().getName());
+//							System.out.println(rete.get(w.getTreno().getCodiceTreno()).get(w.getOraArr()).getClass().getName());
 							
-							while( rete.get(w.getTreno().getCodiceTreno()).isEmpty()){
-								
-								
+							Tratta tratta = (Tratta) rete.get(w.getTreno().getCodiceTreno()).get(w.getOraArr());
+							Map.Entry<Short, Tratta> nodo_prossima_tratta = ((TreeMap<Short, Tratta>) rete.get(w.getTreno().getCodiceTreno())).ceilingEntry(tratta.getOraPart());
+							if(nodo_prossima_tratta != null ){
+								Tratta prossima_tratta = (Tratta) nodo_prossima_tratta.getValue();
+							} else {
+								Tratta prossima_tratta = (Tratta) ((TreeMap<Short, Tratta>) rete.get(w.getTreno().getCodiceTreno())).firstEntry().getValue();
 							}
+							//Bisogna scegliere la tratta giusta
+							
 							
 							// - IF Dist[w] > Dist[v] + p(v, w) THEN
 							if(dist.get(w.getStaz().getCodiceStazione()) > dist.get(v.getCodiceStazione()) + (v.getPeso() + w.getStaz().getPeso())) {
