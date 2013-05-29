@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.TreeMap;
 
 import project.treni.Richiesta;
@@ -136,7 +137,7 @@ public class ParserFileInput {
 					rete.put(treno.getCodiceTreno(), tratte);
 				}
 
-				stazione.setPeso(0); // TODO: Real weight
+				stazione.setPeso(Integer.MAX_VALUE); // TODO: Real weight
 				stazioni.put(stazione.getCodiceStazione(), stazione);
 			}
 
@@ -172,10 +173,11 @@ public class ParserFileInput {
 					Map<Integer, Integer> p = new HashMap<Integer, Integer>();
 					for (Map.Entry<Integer, Stazione> e : stazioni.entrySet())
 						p.put(e.getKey(), 0);
-
+					s1.setPeso(0);
+					
 					// - Dist[u] <- 0
 					dist.put(s1.getCodiceStazione(), 0);
-
+					
 					// - P[u] <- u
 					p.put(s1.getCodiceStazione(), s1.getCodiceStazione());
 
@@ -183,12 +185,15 @@ public class ParserFileInput {
 					// priorità sono i valori di Dist
 					MinHeap h = new MinHeap(new ArrayList<Stazione>(
 							stazioni.values()));
-
+					
 					// - WHILE H non è vuoto DO
 					while (!h.isEmpty()) {
 						// - v <- H.get_min() /* preleva il nodo con distanza
 						// minima */
 						Stazione v = h.min();
+						
+						System.out.println("Stazione v "+v.getCodiceStazione()+ "Stazione s1 " +s1.getCodiceStazione());
+						
 						// - FOR ogni adiacente w di v DO
 						for(Tratta w : v.getTratte()) {
 							// TODO: settare il peso a ogni w.stazione e aggiornare l'heap con remove+add
@@ -205,38 +210,54 @@ public class ParserFileInput {
 								Tratta prossima_tratta;
 								Tratta tratta = (Tratta) rete.get(w.getTreno().getCodiceTreno()).get(w.getOraArr());
 								Map.Entry<Short, Tratta> nodo_prossima_tratta = ((TreeMap<Short, Tratta>) rete.get(w.getTreno().getCodiceTreno())).ceilingEntry(tratta.getOraPart());
+							
 								if(nodo_prossima_tratta != null ){
 									prossima_tratta = (Tratta) nodo_prossima_tratta.getValue();
 								} else {
 									prossima_tratta = (Tratta) ((TreeMap<Short, Tratta>) rete.get(w.getTreno().getCodiceTreno())).firstEntry().getValue();
 								}
 							
-								//calcolo il peso della stazione di arrivo     e lo fa bene
-								prossima_tratta.getStaz().setPeso(prossima_tratta.getOraArr()-tratta.getOraPart());
+								//calcolo il peso della stazione di arrivo    
+								if(prossima_tratta.getOraArr() > tratta.getOraPart()){
+									prossima_tratta.getStaz().setPeso(prossima_tratta.getOraArr()-tratta.getOraPart());
+//								}else if(prossima_tratta.getOraArr() < tratta.getOraPart()){
+//									System.out.println("PESO PROSSIMA TRATTA"+prossima_tratta.getStaz().getPeso() );
+//								}
+								
 								System.out.println("Peso prossimaTratta "+prossima_tratta.getStaz().getPeso());
 								//Bisogna scegliere la tratta giusta
 								System.out.println("staz partenza"+tratta.getStaz().getCodiceStazione());
 								System.out.println("Staz arr"+prossima_tratta.getStaz().getCodiceStazione());
 							
-								// TODO: una stazione gia visitata non deve essere rivisitata
-								
-								
+								// TODO: una stazione gia visitata non deve essere rivisitata, bisogna aggiungere l intervallo di tempo trascorso nella stazione
+								// TODO: si puo settare il peso stazione di default con il tempo trascorso tra arrivo e partenza.
+
 								// - IF Dist[w] > Dist[v] + p(v, w) THEN
 								if(dist.get(prossima_tratta.getStaz().getCodiceStazione()) > dist.get(v.getCodiceStazione()) + (v.getPeso() + prossima_tratta.getStaz().getPeso())) {
 									// - Dist[w] <- Dist[v] + p(v, w)
 									dist.put(prossima_tratta.getStaz().getCodiceStazione(), dist.get(v.getCodiceStazione()) + (v.getPeso() + prossima_tratta.getStaz().getPeso()));
+									System.out.println("dist" +dist.get(v.getCodiceStazione()));
+
+									System.out.println("valore aggiunto alla dist di v " +v.getPeso() + prossima_tratta.getStaz().getPeso());
 									// - P[w] <- v
 									p.put(prossima_tratta.getStaz().getCodiceStazione(), v.getCodiceStazione());
 									System.out.println("prossimaTrattaStaz "+prossima_tratta.getStaz().getCodiceStazione()+"  v.getCodStaz "+v.getCodiceStazione());
 									// - H.decrease(w) /* aggiorna l'heap a seguito del decremento */
-									h.remove();
+									
 								}
+								}h.remove(); // spostato qui, seno andava in loop
 							}
 							}
 							
+						
+						
 							
 					}
-
+					Set<Integer> keySet = dist.keySet();
+					for(Integer key:keySet){
+					     Integer value = dist.get(key);
+					     System.out.println(dist.get(dist.get(value)));
+					}
 //					System.out.println("dist -------------- " + dist.size());
 //					System.out.println(dist);
 
