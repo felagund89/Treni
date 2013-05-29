@@ -198,37 +198,50 @@ public class ParserFileInput {
 							//oppure l`ora di arrivo minore rispetto a V, settato il peso lo aggiorno nella tratta w, e faccio cosi man mano per ogni tratta w
 							//alla fine verra presa la tratta con peso minore.
 							
-							int appoggio = 0;
-//							System.out.println(rete.get(10).get(Short.parseShort("291")).getClass().getName());
-//							System.out.println(rete.get(w.getTreno().getCodiceTreno()).get(w.getOraArr()).getClass().getName());
+							if(w.getOraPart()!=-1){    //controlliamo che nn sia una stazione dove termina la tratta
+								int appoggio = 0;
 							
-							Tratta tratta = (Tratta) rete.get(w.getTreno().getCodiceTreno()).get(w.getOraArr());
-							Map.Entry<Short, Tratta> nodo_prossima_tratta = ((TreeMap<Short, Tratta>) rete.get(w.getTreno().getCodiceTreno())).ceilingEntry(tratta.getOraPart());
-							if(nodo_prossima_tratta != null ){
-								Tratta prossima_tratta = (Tratta) nodo_prossima_tratta.getValue();
-							} else {
-								Tratta prossima_tratta = (Tratta) ((TreeMap<Short, Tratta>) rete.get(w.getTreno().getCodiceTreno())).firstEntry().getValue();
+							
+								Tratta prossima_tratta;
+								Tratta tratta = (Tratta) rete.get(w.getTreno().getCodiceTreno()).get(w.getOraArr());
+								Map.Entry<Short, Tratta> nodo_prossima_tratta = ((TreeMap<Short, Tratta>) rete.get(w.getTreno().getCodiceTreno())).ceilingEntry(tratta.getOraPart());
+								if(nodo_prossima_tratta != null ){
+									prossima_tratta = (Tratta) nodo_prossima_tratta.getValue();
+								} else {
+									prossima_tratta = (Tratta) ((TreeMap<Short, Tratta>) rete.get(w.getTreno().getCodiceTreno())).firstEntry().getValue();
+								}
+							
+								//calcolo il peso della stazione di arrivo     e lo fa bene
+								prossima_tratta.getStaz().setPeso(prossima_tratta.getOraArr()-tratta.getOraPart());
+								System.out.println("Peso prossimaTratta "+prossima_tratta.getStaz().getPeso());
+								//Bisogna scegliere la tratta giusta
+								System.out.println("staz partenza"+tratta.getStaz().getCodiceStazione());
+								System.out.println("Staz arr"+prossima_tratta.getStaz().getCodiceStazione());
+							
+								// TODO: una stazione gia visitata non deve essere rivisitata
+								
+								
+								// - IF Dist[w] > Dist[v] + p(v, w) THEN
+								if(dist.get(prossima_tratta.getStaz().getCodiceStazione()) > dist.get(v.getCodiceStazione()) + (v.getPeso() + prossima_tratta.getStaz().getPeso())) {
+									// - Dist[w] <- Dist[v] + p(v, w)
+									dist.put(prossima_tratta.getStaz().getCodiceStazione(), dist.get(v.getCodiceStazione()) + (v.getPeso() + prossima_tratta.getStaz().getPeso()));
+									// - P[w] <- v
+									p.put(prossima_tratta.getStaz().getCodiceStazione(), v.getCodiceStazione());
+									System.out.println("prossimaTrattaStaz "+prossima_tratta.getStaz().getCodiceStazione()+"  v.getCodStaz "+v.getCodiceStazione());
+									// - H.decrease(w) /* aggiorna l'heap a seguito del decremento */
+									h.remove();
+								}
 							}
-							//Bisogna scegliere la tratta giusta
-							
-							
-							// - IF Dist[w] > Dist[v] + p(v, w) THEN
-							if(dist.get(w.getStaz().getCodiceStazione()) > dist.get(v.getCodiceStazione()) + (v.getPeso() + w.getStaz().getPeso())) {
-								// - Dist[w] <- Dist[v] + p(v, w)
-								dist.put(w.getStaz().getCodiceStazione(), dist.get(v.getCodiceStazione()) + (v.getPeso() + w.getStaz().getPeso()));
-								// - P[w] <- v
-								p.put(w.getStaz().getCodiceStazione(), v.getCodiceStazione());
-								// - H.decrease(w) /* aggiorna l'heap a seguito del decremento */
-								h.remove();
 							}
-						}
+							
+							
 					}
 
-					System.out.println("dist -------------- " + dist.size());
-					System.out.println(dist);
+//					System.out.println("dist -------------- " + dist.size());
+//					System.out.println(dist);
 
-					System.out.println("p --------------" + p.size());
-					System.out.println(p);
+//					System.out.println("p --------------" + p.size());
+//					System.out.println(p);
 
 					System.exit(0);
 					// Fine porcate
