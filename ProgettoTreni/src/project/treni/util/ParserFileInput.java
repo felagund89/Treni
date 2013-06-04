@@ -137,7 +137,7 @@ public class ParserFileInput {
 					rete.put(treno.getCodiceTreno(), tratte);
 				}
 
-				stazione.setPeso(Integer.MAX_VALUE); // TODO: Real weight
+				stazione.setPeso(0);
 				stazioni.put(stazione.getCodiceStazione(), stazione);
 			}
 
@@ -173,7 +173,6 @@ public class ParserFileInput {
 					Map<Integer, Integer> p = new HashMap<Integer, Integer>();
 					for (Map.Entry<Integer, Stazione> e : stazioni.entrySet())
 						p.put(e.getKey(), 0);
-					s1.setPeso(0);
 					
 					// - Dist[u] <- 0
 					dist.put(s1.getCodiceStazione(), 0);
@@ -183,31 +182,29 @@ public class ParserFileInput {
 
 					// - H <- min-heap inizializzato con tutti i nodi e le
 					// priorità sono i valori di Dist
-					MinHeap h = new MinHeap(new ArrayList<Stazione>(
-							stazioni.values()));
+					Map<Integer, Map> h = new HashMap<Integer, Map>(rete);
+					
+					// - v <- H.get_min() /* preleva il nodo con distanza
+					// minima */
+					Stazione v = s1;
 					
 					// - WHILE H non è vuoto DO
-					while (!h.isEmpty()) {
-						// - v <- H.get_min() /* preleva il nodo con distanza
-						// minima */
-						Stazione v = h.min();
+					while (h.size() > 0) {
 						
 						System.out.println("Stazione v "+v.getCodiceStazione()+ "Stazione s1 " +s1.getCodiceStazione());
+
+						Tratta prossima_tratta;
 						
 						// - FOR ogni adiacente w di v DO
 						for(Tratta w : v.getTratte()) {
-							// TODO: settare il peso a ogni w.stazione e aggiornare l'heap con remove+add
+							// TODO: settare il peso a ogni w.stazione
 							
 							//per settare il peso, prendo la lista delle stazioni attraversate dal treno preso in considerazione
 							// scorro la mappa delle stazioni attraversate e setto il peso prendendo o il minore delle ore di partenza maggiori rispetto a v
 							//oppure l`ora di arrivo minore rispetto a V, settato il peso lo aggiorno nella tratta w, e faccio cosi man mano per ogni tratta w
 							//alla fine verra presa la tratta con peso minore.
 							
-							if(w.getOraPart()!=-1){    //controlliamo che nn sia una stazione dove termina la tratta
-								int appoggio = 0;
-							
-							
-								Tratta prossima_tratta;
+							if(w.getOraPart() != -1) {    //controlliamo che nn sia una stazione dove termina la tratta
 								Tratta tratta = (Tratta) rete.get(w.getTreno().getCodiceTreno()).get(w.getOraArr());
 								Map.Entry<Short, Tratta> nodo_prossima_tratta = ((TreeMap<Short, Tratta>) rete.get(w.getTreno().getCodiceTreno())).ceilingEntry(tratta.getOraPart());
 							
@@ -220,7 +217,8 @@ public class ParserFileInput {
 								//calcolo il peso della stazione di arrivo    
 								if(prossima_tratta.getOraArr() > tratta.getOraPart()){
 									prossima_tratta.getStaz().setPeso(prossima_tratta.getOraArr()-tratta.getOraPart());
-//								}else if(prossima_tratta.getOraArr() < tratta.getOraPart()){
+								}
+//								else if(prossima_tratta.getOraArr() < tratta.getOraPart()){
 //									System.out.println("PESO PROSSIMA TRATTA"+prossima_tratta.getStaz().getPeso() );
 //								}
 								
@@ -243,15 +241,13 @@ public class ParserFileInput {
 									p.put(prossima_tratta.getStaz().getCodiceStazione(), v.getCodiceStazione());
 									System.out.println("prossimaTrattaStaz "+prossima_tratta.getStaz().getCodiceStazione()+"  v.getCodStaz "+v.getCodiceStazione());
 									// - H.decrease(w) /* aggiorna l'heap a seguito del decremento */
-									
+									h.get(prossima_tratta.getTreno().getCodiceTreno()).remove(prossima_tratta.getOraArr()); // spostato qui, seno andava in loop
+									// Se il treno non ha più tratte lo tolgo dalla rete
+									if(h.get(prossima_tratta.getTreno().getCodiceTreno()).size() == 0)
+										h.remove(prossima_tratta.getTreno().getCodiceTreno());
 								}
-								}h.remove(); // spostato qui, seno andava in loop
 							}
-							}
-							
-						
-						
-							
+						}	
 					}
 					Set<Integer> keySet = dist.keySet();
 					for(Integer key:keySet){
